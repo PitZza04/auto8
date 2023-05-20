@@ -3,6 +3,8 @@ export type RootStackParamList = {
   Home: undefined;
   Services: undefined;
   Address: undefined;
+  Categories: undefined;
+  Vehicle: undefined;
 };
 
 export type TabParamList = {

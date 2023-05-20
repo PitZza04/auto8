@@ -9,6 +9,7 @@ export const asyncStoragePersistor = createAsyncStoragePersister({
 export const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
+      retry: 2,
       cacheTime: 1000 * 60 * 60 * 12, // 24 hours
     },
   },

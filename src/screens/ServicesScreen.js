@@ -1,11 +1,25 @@
-import {StyleSheet, Text, View} from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  ScrollView,
+  ActivityIndicator,
+  Button,
+} from 'react-native';
 import React from 'react';
+import {useQuery} from '@tanstack/react-query';
+import {getServicesByCategory, getServices} from '../api/services';
 
 const ServicesScreen = () => {
+  const {data, isLoading, error, refetch, isFetching} = useQuery({
+    queryKey: ['services'],
+    queryFn: getServices,
+  });
+
+  if (isLoading) return <ActivityIndicator />;
   return (
-    <View style={styles.container}>
-      <Text>ServicesScreen</Text>
-    </View>
+    <ScrollView contentContainerStyle={styles.container} scrollEnabled>
+      <Text>{JSON.stringify(data, null, 2)}</Text>
+    </ScrollView>
   );
 };
 

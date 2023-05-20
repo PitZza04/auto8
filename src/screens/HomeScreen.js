@@ -1,17 +1,19 @@
-import {StyleSheet, Text, View} from 'react-native';
+import {Button, StyleSheet, Text, View} from 'react-native';
 import React from 'react';
-import {useQuery} from '@tanstack/react-query';
-//import {queryClient} from '../utils/queryClient';
-import {getServices} from '../api/services';
-const HomeScreen = () => {
-  const {data, error, refetch, isFetching} = useQuery(
-    ['servicesCategory'],
-    getServices,
-  );
 
+const HomeScreen = ({navigation}) => {
   return (
     <View style={styles.container}>
-      <Text>{JSON.stringify(data, null, 2)}</Text>
+      <Button
+        title="Categories"
+        onPress={() => navigation.navigate('Categories')}
+      />
+      <Button
+        title="Services"
+        onPress={() => navigation.navigate('Services')}
+      />
+      <Button title="Vehicle" onPress={() => navigation.navigate('Vehicle')} />
+      <Button title="Address" onPress={() => navigation.navigate('Address')} />
     </View>
   );
 };
@@ -21,7 +23,7 @@ export default HomeScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
+    justifyContent: 'space-evenly',
     alignItems: 'center',
   },
 });

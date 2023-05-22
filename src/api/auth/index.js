@@ -20,6 +20,10 @@ export const register = async (mobileNum, password) => {
   return Promise.resolve(data);
 };
 
+export const getCurrentUser = async () => {
+  const current = await supabaseClient.auth.getSession();
+  if (current) return current;
+};
 export const logout = async () => {
   const {error} = await supabaseClient.auth.signOut();
   if (error) return Promise.reject(error);

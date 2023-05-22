@@ -1,7 +1,14 @@
 import {Button, StyleSheet, Text, View} from 'react-native';
-import React from 'react';
+import React, {useEffect} from 'react';
+import {getCurrentUser} from '../api/auth';
 
 const HomeScreen = ({navigation}) => {
+  useEffect(() => {
+    async () => {
+      const user = await getCurrentUser();
+      console.log('hello', user);
+    };
+  }, []);
   return (
     <View style={styles.container}>
       <Button

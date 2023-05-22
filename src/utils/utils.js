@@ -1,9 +1,9 @@
 export function getSubCategories(categories, parentId) {
-  const subCategories = categories.filter(
+  const subCategories = categories?.filter(
     category => category.parent_id === parentId,
   );
 
-  subCategories.forEach(category => {
+  subCategories?.forEach(category => {
     category.subCategories = getSubCategories(categories, category.id);
   });
 

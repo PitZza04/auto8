@@ -10,7 +10,7 @@ const VehicleScreen = () => {
   });
   const id = 1;
   const {data: model} = useQuery({
-    queryKey: ['brand', id],
+    queryKey: ['models', id],
     queryFn: () => getModelByBrandId(id),
   });
 

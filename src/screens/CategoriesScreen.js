@@ -24,7 +24,11 @@ const CategoriesScreen = () => {
     queryKey: ['categories'],
     queryFn: getCategories,
   });
-  const structuredData = getSubCategories(data, null);
+  let structuredData;
+  if (data) {
+    structuredData = getSubCategories(data, null);
+  }
+
   return (
     <View style={styles.container}>
       <View>

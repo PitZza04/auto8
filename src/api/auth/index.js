@@ -1,14 +1,14 @@
 import supabaseClient from '../../utils/supabaseClient';
 
 export const login = async (email, password) => {
-  const {data, error} = await supabaseClient.auth.signInWithPassword({
+  const {error} = await supabaseClient.auth.signInWithPassword({
     email,
     password,
   });
 
   if (error) return Promise.reject(error);
 
-  return Promise.resolve(data);
+  return Promise.resolve();
 };
 
 export const register = async (mobileNum, password) => {

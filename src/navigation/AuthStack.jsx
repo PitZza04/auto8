@@ -1,21 +1,19 @@
 import React from 'react';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import {RootStackParamList} from '../routes';
-import HomeScreen from '../screens/HomeScreen';
+import {createStackNavigator} from '@react-navigation/stack';
 import {NavigationContainer} from '@react-navigation/native';
-import CategoriesScreen from '../screens/CategoriesScreen';
+import LoginScreen from '../screens/LoginScreen';
+import SignUpScreen from '../screens/SignUpScreen';
 
-const Stack = createNativeStackNavigator();
-const HomeStack = () => {
-  console.log('Awit');
+const Stack = createStackNavigator();
+const AuthStack = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        <Stack.Screen name="Home" component={HomeScreen} />
-        <Stack.Screen name="Categories" component={CategoriesScreen} />
+        <Stack.Screen name="Login" component={LoginScreen} />
+        <Stack.Screen name="SignUp" component={SignUpScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );
 };
 
-export default HomeStack;
+export default AuthStack;

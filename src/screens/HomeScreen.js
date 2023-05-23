@@ -1,7 +1,7 @@
 import {Button, StyleSheet, Text, View} from 'react-native';
 import React, {useEffect} from 'react';
 import {getCurrentUser} from '../api/auth';
-
+import {useStore} from '../store';
 const HomeScreen = ({navigation}) => {
   useEffect(() => {
     async () => {
@@ -9,6 +9,8 @@ const HomeScreen = ({navigation}) => {
       console.log('hello', user);
     };
   }, []);
+  const logout = useStore(state => state.logout);
+
   return (
     <View style={styles.container}>
       <Button
@@ -21,6 +23,7 @@ const HomeScreen = ({navigation}) => {
       />
       <Button title="Vehicle" onPress={() => navigation.navigate('Vehicle')} />
       <Button title="Address" onPress={() => navigation.navigate('Address')} />
+      <Button title="Logout" onPress={logout} />
     </View>
   );
 };

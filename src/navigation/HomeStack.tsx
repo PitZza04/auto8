@@ -7,6 +7,7 @@ import ServicesScreen from '../screens/ServicesScreen';
 import {NavigationContainer} from '@react-navigation/native';
 import CategoriesScreen from '../screens/CategoriesScreen';
 import VehicleScreen from '../screens/VehicleScreen';
+import CartScreen from '../screens/CartScreen';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 const HomeStack = () => {
@@ -17,6 +18,7 @@ const HomeStack = () => {
         <Stack.Screen name="Home" component={HomeScreen} />
         <Stack.Screen name="Categories" component={CategoriesScreen} />
         <Stack.Screen name="Services" component={ServicesScreen} />
+        <Stack.Screen name="Cart" component={CartScreen} />
         <Stack.Screen name="Vehicle" component={VehicleScreen} />
         <Stack.Screen name="Address" component={AddressScreen} />
       </Stack.Navigator>

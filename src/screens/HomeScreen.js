@@ -22,6 +22,7 @@ const HomeScreen = ({navigation}) => {
         onPress={() => navigation.navigate('Services')}
       />
       <Button title="Vehicle" onPress={() => navigation.navigate('Vehicle')} />
+      <Button title="Cart" onPress={() => navigation.navigate('Cart')} />
       <Button title="Address" onPress={() => navigation.navigate('Address')} />
       <Button title="Logout" onPress={logout} />
     </View>

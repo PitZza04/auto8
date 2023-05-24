@@ -36,6 +36,8 @@ export const getCartItems = async () => {
     .from('cart_items')
     .select('id, services(*, services_category(*))')
     .eq('cart_id', cartID.id);
+
+  return cartItems;
 };
 
 export async function getCartItemsById(cartID) {

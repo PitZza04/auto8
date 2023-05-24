@@ -11,8 +11,8 @@ import React, {useEffect, useState} from 'react';
 import {useStore} from '../store';
 
 const LoginScreen = ({navigation}) => {
-  const [password, setPassword] = useState();
-  const [email, setEmail] = useState();
+  const [password, setPassword] = useState('015312');
+  const [email, setEmail] = useState('ryanmercurio1@gmail.com');
   const [loading, setLoading] = useState(false);
   const login = useStore(state => state.login);
   const goToSignUp = () => {

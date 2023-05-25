@@ -14,7 +14,7 @@ const LoginScreen = ({navigation}) => {
   const [password, setPassword] = useState('015312');
   const [email, setEmail] = useState('ryanmercurio1@gmail.com');
   const [loading, setLoading] = useState(false);
-  const login = useStore(state => state.login);
+  const signIn = useStore(state => state.signIn);
   const goToSignUp = () => {
     console.log('hello');
   };
@@ -25,7 +25,7 @@ const LoginScreen = ({navigation}) => {
       return null;
     }
     setLoading(true);
-    await login(email, password);
+    await signIn(email, password);
     setLoading(false);
   };
   return (

@@ -4,22 +4,35 @@ import {
   ScrollView,
   ActivityIndicator,
   Button,
+  View,
+  FlatList,
 } from 'react-native';
 import React from 'react';
 import {useQuery} from '@tanstack/react-query';
 import {getServicesByCategory, getServices} from '../api/services';
+import ServicesCard from '../components/ServicesCard';
 
 const ServicesScreen = () => {
   const {data, isLoading, error, refetch, isFetching} = useQuery({
     queryKey: ['services'],
     queryFn: getServices,
   });
-
+  const renderProductItem = ({item}) => {
+    return <ServicesCard service={item} />;
+  };
+  console.log(data);
   if (isLoading) return <ActivityIndicator />;
   return (
-    <ScrollView contentContainerStyle={styles.container} scrollEnabled>
-      <Text>{JSON.stringify(data, null, 2)}</Text>
-    </ScrollView>
+    <View style={styles.container}>
+      <View>
+        <Text>SERVICES</Text>
+      </View>
+      <FlatList
+        data={data}
+        keyExtractor={item => item.id.toString()}
+        renderItem={renderProductItem}
+      />
+    </View>
   );
 };
 
@@ -29,6 +42,5 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
-    alignItems: 'center',
   },
 });

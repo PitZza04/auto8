@@ -6,8 +6,8 @@ import {createAuthSlice} from './authSlice';
 
 export const useStore = create(
   persist(
-    (set, get, api) => ({
-      ...createAuthSlice(set, get, api),
+    (set, get) => ({
+      ...createAuthSlice(set, get),
     }),
     {
       name: 'automate-auth',

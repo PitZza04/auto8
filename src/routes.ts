@@ -6,6 +6,7 @@ export type RootStackParamList = {
   Categories: undefined;
   Vehicle: undefined;
   Cart: undefined;
+  Appointment: undefined;
 };
 
 export type TabParamList = {

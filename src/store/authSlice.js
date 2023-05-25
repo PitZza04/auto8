@@ -4,7 +4,7 @@ export const createAuthSlice = set => ({
   isLoggedIn: false,
   session: null,
   setSession: session => set({session}),
-  login: async (email, password) => {
+  signIn: async (email, password) => {
     if (!email) return Promise.reject('Email is required');
     if (!password) return Promise.reject('Password is required');
 

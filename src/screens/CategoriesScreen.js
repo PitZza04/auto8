@@ -29,6 +29,8 @@ const CategoriesScreen = () => {
     structuredData = getSubCategories(data, null);
   }
 
+  console.log(JSON.stringify(structuredData, null, 2));
+
   return (
     <View style={styles.container}>
       <View>

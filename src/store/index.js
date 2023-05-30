@@ -3,13 +3,13 @@ import {create} from 'zustand';
 import {persist, createJSONStorage} from 'zustand/middleware';
 
 import {createAuthSlice} from './authSlice';
-import {createCartSlice} from './cartSlice';
+import {createCartSlice} from './cartSlice2';
 
 export const useStore = create(
   persist(
-    (set, get) => ({
-      ...createAuthSlice(set, get),
-      ...createCartSlice(set, get),
+    (...args) => ({
+      ...createAuthSlice(...args),
+      ...createCartSlice(...args),
     }),
     {
       name: 'automate-auth',

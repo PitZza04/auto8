@@ -21,8 +21,10 @@ export const register = async (mobileNum, password) => {
 };
 
 export const getCurrentUser = async () => {
-  const current = await supabaseClient.auth.getSession();
-  if (current) return current;
+  const {
+    data: {session},
+  } = await supabaseClient.auth.getSession();
+  if (session) return session;
 };
 export const logout = async () => {
   const {error} = await supabaseClient.auth.signOut();

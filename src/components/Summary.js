@@ -15,12 +15,13 @@ const Summary = ({service}) => {
     queryKey: ['address', userId],
     queryFn: () => getAddress(userId),
   });
-  const {id, barangay, city, province} = data[0];
-  const renderAddress = () => {
-    const address = `Brgy. ${barangay.barangay_name}, ${city.city_name}, ${province.province_name} `;
-    return address;
-  };
-  console.log('data summary', data);
+  //console.log('address', data);
+  // const {id, barangay, city, province} = data;
+  // const renderAddress = () => {
+  //   const address = `Brgy. ${barangay?.barangay_name}, ${city?.city_name}, ${province?.province_name} `;
+  //   return address;
+  // };
+  //console.log('data summary', data);
   return (
     <View style={styles.container}>
       <Text style={styles.label}>Order Summary</Text>

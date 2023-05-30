@@ -2,7 +2,9 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import supabaseClient from '../../utils/supabaseClient';
 import {getCurrentUser} from '../auth';
 
-export const getCart = async id => {
+export const getCart = async () => {
+  const {user: id} = await getCurrentUser();
+  if (!id) return null;
   const {data, error} = await supabaseClient
     .from('cart')
     .select('id')
@@ -14,10 +16,10 @@ export const getCart = async id => {
 };
 
 export const newCart = async shop_branch_id => {
-  const user_id = await getCurrentUser();
-  if (!user_id && !shop_branch_id) return null;
+  const {user} = await getCurrentUser();
+
   const cartData = {
-    user_id,
+    user_id: user.id,
     shop_branch_id,
   };
   const {data, error} = await supabaseClient.from('cart').insert(cartData);
@@ -25,15 +27,15 @@ export const newCart = async shop_branch_id => {
     console.error('[newCart]', error);
     return null;
   }
-  return data && data.length > 0 ? data[0] : null;
+  return data && data.length > 0 ? data[0].id : null;
 };
 
 export const checkIfCartExist = async shop_branch_id => {
-  const user_id = await getCurrentUser();
+  const {user} = await getCurrentUser();
 
-  if (!user_id && !shop_branch_id) return null;
+  if (!user.id && !shop_branch_id) return null;
   const {data, error} = await supabaseClient.from('cart').select('*').match({
-    user_id,
+    user_id: user.id,
     shop_branch_id,
   });
   if (error) {
@@ -55,7 +57,18 @@ export const getCartItems = async () => {
     .eq('cart_id', cartID.id);
   return cartItems;
 };
+// export const newCartItems = async services_id => {
+//   const {user} = await getCurrentUser();
+//   if (!services_id && !user.id) return null;
 
+//   const {data, error} = await supabaseClient
+//     .from('cart_items')
+//     .select('*')
+//     .match({
+//       cart_id:
+//     })
+
+// };
 export async function getCartItemsById(cartID) {
   if (!cartID) return null;
   const {data, error} = await supabaseClient

@@ -71,7 +71,7 @@ const AppointmentScreen = ({route}) => {
           onPressIn={() => showDatePicker()}
         />
         <Pressable onPress={() => showDatePicker()}>
-          <Icon name="snapchat" size={20} color="#888" style={styles.icon} />
+          <Icon name="calendar" size={20} color="#b8312f" style={styles.icon} />
         </Pressable>
       </View>
       <DateTimePickerModal

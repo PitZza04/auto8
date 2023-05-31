@@ -3,12 +3,12 @@ import {createClient} from '@supabase/supabase-js';
 import 'react-native-url-polyfill/auto';
 import Config from 'react-native-config';
 
-if (!Config.SUPABASE_URL || !Config.SUPABASE_KEY) {
+if (!Config.SUPABASE_URL || !Config.SUPABASE_ANON_KEY) {
   console.error('[Supabase] URL and Key not found in environment variables.');
 }
 const supabaseClient = createClient(
   Config.SUPABASE_URL!,
-  Config.SUPABASE_KEY!,
+  Config.SUPABASE_ANON_KEY!,
   {
     auth: {
       storage: AsyncStorage,

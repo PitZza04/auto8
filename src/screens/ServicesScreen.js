@@ -21,19 +21,22 @@ const ServicesScreen = () => {
     queryFn: getServices,
   });
 
-  const {data: cartData} = useQuery({
-    queryKey: ['cartItems'],
-    queryFn: getCartItems,
-  });
-  const carts = useStore(state => state.carts, shallow);
-  const resetAllCartItems = useStore(state => state.resetAllCartItems);
+  // const {data: cartData} = useQuery({
+  //   queryKey: ['cartItems'],
+  //   queryFn: getCartItems,
+  // });
+  const cartService = useStore(state => state.cartService, shallow);
+  const resetAllCartService = useStore(state => state.resetAllCartService);
 
+  // console.log(JSON.stringify(cartService, null, 2));
   const renderItem = ({item}) => {
     return (
       <ServicesCard
         service={item}
         isInCart={
-          typeof carts.find(cart => cart.id === item.id) !== 'undefined'
+          typeof cartService.map(cart =>
+            cart.services.find(service => service.id === item.id),
+          ) !== 'undefined'
         }
       />
     );
@@ -44,12 +47,12 @@ const ServicesScreen = () => {
     <View style={styles.container}>
       <View>
         <Text>SERVICES</Text>
-        {carts?.map((item, index) => (
-          <View key={item.id + index}>
-            <Text>{item.services_name}</Text>
+        {cartService?.map((item, index) => (
+          <View key={item?.cart + index}>
+            {/* <Text>{JSON.stringify(item, null, 2)}</Text> */}
           </View>
         ))}
-        <Button onPress={resetAllCartItems} title="reset" />
+        <Button onPress={resetAllCartService} title="reset" />
       </View>
       <FlatList
         data={data}

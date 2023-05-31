@@ -17,7 +17,12 @@ export const getCart = async () => {
 
 export const newCart = async shop_branch_id => {
   const {user} = await getCurrentUser();
-
+  if (!user && !shop_branch_id) return null;
+  const cartExist = await checkIfCartExist(shop_branch_id);
+  if (cartExist) {
+    console.log('EXist na yan bro', cartExist);
+    return cartExist.id;
+  }
   const cartData = {
     user_id: user.id,
     shop_branch_id,

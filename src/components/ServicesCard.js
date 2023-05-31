@@ -25,33 +25,51 @@ const ServiceOptions = ({options}) => {
 
 const ServicesCard = ({service, isInCart}) => {
   const {services_options_link} = service;
+  // console.log('isIncart', isInCart);
   const [toggle, setToggle] = useState(false);
   const [cartBasket, setCartBasket] = useState(null);
   const navigation = useNavigation();
-  const addCartItem = useStore(state => state.addCartItem);
-  const carts = useStore(state => state.carts, shallow);
-  const removeCartItem = useStore(state => state.removeCartItem);
+  const addItemToCart = useStore(state => state.addItemToCart);
+  const carts = useStore(state => state.cartService, shallow);
+  const createCart = useStore(state => state.createCart);
+  const removeItemFromCart = useStore(state => state.removeItemFromCart);
+
   const toggleShow = useCallback(() => {
     setToggle(!toggle);
   }, [toggle, setToggle]);
 
+  // console.log('zusnta', JSON.stringify(carts, null, 2));
   const onAddToCartPress = async service => {
-    const cartEmpty = carts.length > 0;
-
-    // let theCartBasket = cartBasket || (await newCart(service.shop_branch_id));
-    // if (!theCartBasket) {
-
-    // }
+    const cartIndex = carts.findIndex(cart =>
+      cart?.services?.findIndex(
+        item => item?.shop_branch_id === service?.shop_branch_id,
+      ),
+    );
+    console.log(cartIndex);
+    console.log(JSON.stringify(carts, null, 2));
+    let cart_id = carts[cartIndex]?.cart;
+    if (cartIndex === -1) {
+      console.log('cartIndex', cartIndex);
+      cart_id = await newCart(service.shop_branch_id);
+      if (!cart_id) return;
+      createCart(cart_id);
+    }
+    if (carts[cartIndex]?.services.find(cart => cart.id === service.id)) {
+      removeItemFromCart(cart_id, service);
+    } else {
+      console.log('first run');
+      addItemToCart(cart_id, service);
+    }
   };
   // const onAddToCartPress = useCallback(
   //   async item => {
-  //     const cartExist = carts.findIndex(
-  //       cart => cart.cartID === item.shop_branch_id,
-  //     );
-  //     if (cartExist === -1) {
-  //       const cart_id = await newCart(item.shop_branch_id);
-  //       console.log('new cart is added', cart_id);
-  //     }
+  // const cartExist = carts.findIndex(
+  //   cart => cart.cartID === item.shop_branch_id,
+  // );
+  // if (cartExist === -1) {
+  //   const cart_id = await newCart(item.shop_branch_id);
+  //   console.log('new cart is added', cart_id);
+  // }
   //     if (carts.find(cartItems => cartItems.id === item.id)) {
   //       removeCartItem(item.id);
   //     } else {
@@ -74,7 +92,7 @@ const ServicesCard = ({service, isInCart}) => {
         //   navigation.navigate('Appointment', {service: service});
         // }}
         onPress={() => onAddToCartPress(service)}
-        title={isInCart ? 'Remove' : 'Add'}
+        title={isInCart ? 'Add' : 'Remove'}
       />
     </View>
   );

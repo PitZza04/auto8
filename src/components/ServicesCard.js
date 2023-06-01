@@ -5,6 +5,8 @@ import {useStore} from '../store';
 import {shallow} from 'zustand/shallow';
 import {checkIfCartExist, newCart} from '../api/cart';
 import supabaseClient from '../utils/supabaseClient';
+import 'react-native-get-random-values';
+import {v4} from 'uuid';
 const ServiceOptions = ({options}) => {
   return (
     <>
@@ -27,57 +29,37 @@ const ServicesCard = ({service, isInCart}) => {
   const {services_options_link} = service;
   // console.log('isIncart', isInCart);
   const [toggle, setToggle] = useState(false);
-  const [cartBasket, setCartBasket] = useState(null);
-  const navigation = useNavigation();
-  const addItemToCart = useStore(state => state.addItemToCart);
-  const carts = useStore(state => state.cartService, shallow);
-  const createCart = useStore(state => state.createCart);
-  const removeItemFromCart = useStore(state => state.removeItemFromCart);
 
+  const cart = useStore(state => state.cart, shallow);
+  const addService = useStore(state => state.addService);
+  const removeService = useStore(state => state.removeService);
   const toggleShow = useCallback(() => {
     setToggle(!toggle);
   }, [toggle, setToggle]);
+  let cartID;
+  const onAddToCartPress = async item => {
+    let tempID = v4();
 
-  // console.log('zusnta', JSON.stringify(carts, null, 2));
-  const onAddToCartPress = async service => {
-    const cartIndex = carts.findIndex(cart =>
-      cart?.services?.findIndex(
-        item => item?.shop_branch_id === service?.shop_branch_id,
-      ),
+    const cartIndex = cart.findIndex(
+      c => c.service.shop_branch_id === item.shop_branch_id,
     );
-    console.log(cartIndex);
-    console.log(JSON.stringify(carts, null, 2));
-    let cart_id = carts[cartIndex]?.cart;
+
+    // create a new cart if no no
+    console.log('cartIndex', cartIndex);
     if (cartIndex === -1) {
-      console.log('cartIndex', cartIndex);
-      cart_id = await newCart(service.shop_branch_id);
-      if (!cart_id) return;
-      createCart(cart_id);
-    }
-    if (carts[cartIndex]?.services.find(cart => cart.id === service.id)) {
-      removeItemFromCart(cart_id, service);
+      console.log('first time');
+      cartID = await newCart(item.shop_branch_id);
+      console.log('CARTID', cartID);
     } else {
-      console.log('first run');
-      addItemToCart(cart_id, service);
+      cartID = cart[cartIndex]?.cartID;
+    }
+
+    if (cart?.find(c => c.service.id === item.id)) {
+      removeService(item.id);
+    } else {
+      addService(item, cartID, tempID);
     }
   };
-  // const onAddToCartPress = useCallback(
-  //   async item => {
-  // const cartExist = carts.findIndex(
-  //   cart => cart.cartID === item.shop_branch_id,
-  // );
-  // if (cartExist === -1) {
-  //   const cart_id = await newCart(item.shop_branch_id);
-  //   console.log('new cart is added', cart_id);
-  // }
-  //     if (carts.find(cartItems => cartItems.id === item.id)) {
-  //       removeCartItem(item.id);
-  //     } else {
-  //       addCartItem(item);
-  //     }
-  //   },
-  //   [carts, addCartItem, removeCartItem],
-  // );
   return (
     <View style={styles.container}>
       <Text>{service.services_name}</Text>
@@ -92,7 +74,7 @@ const ServicesCard = ({service, isInCart}) => {
         //   navigation.navigate('Appointment', {service: service});
         // }}
         onPress={() => onAddToCartPress(service)}
-        title={isInCart ? 'Add' : 'Remove'}
+        title={isInCart ? 'Remove' : 'Add'}
       />
     </View>
   );
@@ -110,3 +92,26 @@ const styles = StyleSheet.create({
     borderColor: 'red',
   },
 });
+
+// const onAddToCartPress = async service => {
+//   const cartIndex = carts.findIndex(cart =>
+//     cart?.services?.findIndex(
+//       item => item?.shop_branch_id === service?.shop_branch_id,
+//     ),
+//   );
+//   console.log(cartIndex);
+//   console.log(JSON.stringify(carts, null, 2));
+//   let cart_id = carts[cartIndex]?.cart;
+//   if (cartIndex === -1) {
+//     console.log('cartIndex', cartIndex);
+//     cart_id = await newCart(service.shop_branch_id);
+//     if (!cart_id) return;
+//     createCart(cart_id);
+//   }
+//   if (carts[cartIndex]?.services.find(cart => cart.id === service.id)) {
+//     removeItemFromCart(cart_id, service);
+//   } else {
+//     console.log('first run');
+//     addItemToCart(cart_id, service);
+//   }
+// };

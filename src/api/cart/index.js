@@ -3,13 +3,13 @@ import supabaseClient from '../../utils/supabaseClient';
 import {getCurrentUser} from '../auth';
 
 export const getCart = async () => {
-  const {user: id} = await getCurrentUser();
-  if (!id) return null;
+  const {user} = await getCurrentUser();
+  if (!user) return null;
   const {data, error} = await supabaseClient
     .from('cart')
-    .select('id')
-    .eq('user_id', id)
-    .single();
+    .select('*')
+    .eq('user_id', user.id);
+
   if (error) console.error('[getCart] no cart', error);
 
   return data;
@@ -17,6 +17,7 @@ export const getCart = async () => {
 
 export const newCart = async shop_branch_id => {
   const {user} = await getCurrentUser();
+
   if (!user && !shop_branch_id) return null;
   const cartExist = await checkIfCartExist(shop_branch_id);
   if (cartExist) {
@@ -52,15 +53,28 @@ export const checkIfCartExist = async shop_branch_id => {
 
 export const getCartItems = async () => {
   const cartID = await getCart();
-  if (!cartID) {
-    console.error('[getCartItems]', cartID);
-  }
+  if (!cartID) return null;
+  let response = [];
 
-  const {data: cartItems} = await supabaseClient
+  await Promise.all(
+    cartID.map(async cart => {
+      const cartItems = await getCartItemsByID(cart.id);
+      response = [...response, ...cartItems];
+    }),
+  );
+
+  return response;
+};
+
+export const getCartItemsByID = async id => {
+  const {data, error} = await supabaseClient
     .from('cart_items')
-    .select('id, services(*, services_category(*))')
-    .eq('cart_id', cartID.id);
-  return cartItems;
+    .select('id, services:services_id(*)')
+    .eq('cart_id', id);
+  if (error) {
+    console.error('[getCartItemsByID]', error);
+  }
+  return data;
 };
 // export const newCartItems = async services_id => {
 //   const {user} = await getCurrentUser();

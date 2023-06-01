@@ -23,10 +23,8 @@ export const getServicesByCategory = async category_id => {
 
 export const getServices = async ctx => {
   console.log('from services', ctx.queryKey);
-  const {data, error} = await supabaseClient
-    .from('services')
-    .select('*, services_options_link(services_options(*))');
-
+  const {data, error} = await supabaseClient.from('services').select('*');
+  // , services_options_link(services_options(*))
   if (error) console.error('[getServices]', error);
 
   return data;

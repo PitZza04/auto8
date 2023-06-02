@@ -92,6 +92,7 @@ const AppointmentScreen = ({route}) => {
       {/* <AddNotes /> */}
       {/* Pick Up or Drop Off */}
       {/* Summary */}
+      <Text>{selectedTime}</Text>
       <Summary service={service} />
       <ConfirmButton onPress={handleSubmit} title="Confirm Appointment" />
     </View>

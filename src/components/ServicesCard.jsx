@@ -28,24 +28,26 @@ const ServiceOptions = ({options}) => {
 const ServicesCard = ({service, isInCart}) => {
   const {services_options_link} = service;
   // console.log('isIncart', isInCart);
+  const navigation = useNavigation();
   const [toggle, setToggle] = useState(false);
 
   const cart = useStore(state => state.cart, shallow);
   const addService = useStore(state => state.addService);
   const removeService = useStore(state => state.removeService);
+  const session = useStore(state => state.session);
   const toggleShow = useCallback(() => {
     setToggle(!toggle);
   }, [toggle, setToggle]);
   let cartID;
   const onAddToCartPress = async item => {
-    let tempID = v4();
+    let tempID = session?.user.id ? null : v4();
 
     const cartIndex = cart.findIndex(
       c => c.service.shop_branch_id === item.shop_branch_id,
     );
 
     // create a new cart if no no
-    console.log('cartIndex', cartIndex);
+
     if (cartIndex === -1) {
       console.log('first time');
       cartID = await newCart(item.shop_branch_id);
@@ -70,10 +72,10 @@ const ServicesCard = ({service, isInCart}) => {
         <Text>Nothing Happened</Text>
       )}
       <Button
-        // onPress={() => {
-        //   navigation.navigate('Appointment', {service: service});
-        // }}
-        onPress={() => onAddToCartPress(service)}
+        onPress={() => {
+          navigation.navigate('Appointment', {service: service});
+        }}
+        // onPress={() => onAddToCartPress(service)}
         title={isInCart ? 'Remove' : 'Add'}
       />
     </View>

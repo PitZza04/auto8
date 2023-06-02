@@ -8,13 +8,13 @@ export default function RootNavigation() {
   const setSession = useStore(state => state.setSession);
   console.log('Session: ', session);
   useEffect(() => {
-    supabaseClient.auth.getSession().then(({data: {session}}) => {
-      setSession(session);
+    supabaseClient.auth.getSession().then(({data: {currentSession}}) => {
+      setSession(currentSession);
     });
 
     const {data: subscription} = supabaseClient.auth.onAuthStateChange(
-      (_event, session) => {
-        setSession(session);
+      (_event, newSession) => {
+        setSession(newSession);
       },
     );
     return () => subscription?.unsubscribe();

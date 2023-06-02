@@ -13,6 +13,7 @@ import AppointmentScreen from '../screens/AppointmentScreen';
 const Stack = createNativeStackNavigator<RootStackParamList>();
 const HomeStack = () => {
   console.log('Awit');
+
   return (
     <NavigationContainer>
       <Stack.Navigator>
